@@ -128,6 +128,7 @@ class MainClass(Resource):
             if args['now'] is None:
                 if args['date'] is None:
                     print ("aguante el rojo")
+                    raise ValueError("Error: no se si ejecutarlo ")
         except TypeError:
             logging.info("error la variable now y el date no estan definidos no se pasaron por parametros me esas llamando de cualquier manera amigo")
             #logging.info(args['now'])
@@ -136,7 +137,7 @@ class MainClass(Resource):
         try:
             os.mkdir(path)
         except Exception as e:
-            jmeter.abort(500, e.__doc__, status = "No pude crear el directorio " + path + str(e), statusCode = "500")
+            jmeter.abort(500, e.__doc__, status = "No pude creapostr el directorio " + path + str(e), statusCode = "500")
             
         try:
             for i in "jmx", "properties", "files":
@@ -154,21 +155,35 @@ class MainClass(Resource):
         
         logging.info("path")
         logging.info(path)
-        jmeter_create_test.add_test(args['nombre_del_proyecto'],path,args['jmx'].filename,args['properties'].filename,args['files'].filename,args['message'],args['date'],args['now'],args['duration'],"pendiente")
         
-        #print (jmeter_create_test.add_test().id_jmeter)
-        #logging.info("id_jmeter")
-        #logging.info(id_jmeter)
-
-
-        #jmx_file = args['jmx']
-        #logging.info(jmx_file)
-        #jmx_file.save("files/" + jmx_file.filename)
-
+        if args['properties'] is None:
+            file_properties = None
+        else:
+            file_properties = repr(args['properties'].filename)
+        
+        
+        if args['files'] is None:
+            file_files = None
+        else:
+            file_files = repr(args['files'].filename)
+        jmeter_create_test.add_test(args['nombre_del_proyecto'], path, args['jmx'].filename, file_properties, file_files, args['message'], args['date'], args['now'], args['duration'], "pendiente")
         return '200'
 
-#@jmeter.route("/search")
-
+@jmeter.route("/<string:nombre>/<string:estado>")
+class MainClass(Resource):
+    #@oidc.require_login
+    @jmeter.doc(params={'nombre': 'nombre del jmenter job', "estado" : "pendiente all etc"},responses={200: 'OK', 400: 'Invalid Argument', 500: 'Mapping Key Error' })
+    def get(self,nombre,estado):
+        try:
+            print ("probeshion")
+        except KeyError as e:
+            jmeter.abort(500, e.__doc__, status = "Could not save information" + str(e), statusCode = "500")
+        except Exception as e:
+            jmeter.abort(400, e.__doc__, status = "Could not save information" + str(e), statusCode = "400")
+        else:
+            x =  '{ "status": "ok", "statusCode":200, "message":"por ahora no hace una verga"}'
+            logging.warning(json.dumps(x))
+            return json.loads(x)
 if __name__ == '__main__':
     print(config['host']['host'],config['host']['port'])
     flask_app.run(debug=True,host=config['host']['host'],port=config['host']['port'])
