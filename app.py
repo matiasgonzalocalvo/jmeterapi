@@ -11,7 +11,7 @@ import os
 from flask_cors import CORS, cross_origin
 
 #jwt keycloack
-#from flask_oidc import OpenIDConnect
+from flask_oidc import OpenIDConnect
 
 
 #para subir los archivos
@@ -28,30 +28,31 @@ flask_app = Flask(__name__)
 CORS(flask_app, supports_credentials=True, resources={r"*": {"origins": "*"}})
 
 #Fix keycloack redirect
-#flask_app.config['OVERWRITE_REDIRECT_URI'] = 'https://farmasaludapi.mgcalvo.com/oidc_callback'
+flask_app.config['OVERWRITE_REDIRECT_URI'] = 'https://farmasaludapi.mgcalvo.com/oidc_callback'
 
 #Fix https
-#@property
-#def specs_url(self):
-#    return url_for(self.endpoint('specs'), _external=True, _scheme='https')    
-#Api.specs_url = specs_url
+@property
+def specs_url(self):
+    url_for = ""
+    return url_for(self.endpoint('specs'), _external=True, _scheme='https')    
+Api.specs_url = specs_url
 
 app = Api(app = flask_app, version = "0.1", title = "Jmeter Api", description = "Apis desarrolladas por el equipo SRE Banco Santander Argentina")
 
-#flask_app.config.update({
-#    'SECRET_KEY': 'SomethingNotEntirelySecret',
-#    'TESTING': True,
-#    'DEBUG': True,
-#    'OIDC_CLIENT_SECRETS': 'conf/client_secrets.json',
-#    'OIDC_ID_TOKEN_COOKIE_SECURE': False,
-#    'OIDC_REQUIRE_VERIFIED_EMAIL': False,
-#    'OIDC_USER_INFO_ENABLED': True,
-#    'OIDC_OPENID_REALM': 'farmasalud',
-#    'OIDC_SCOPES': ['openid', 'email', 'profile'],
-#    'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
-#})
+flask_app.config.update({
+    'SECRET_KEY': 'SomethingNotEntirelySecret',
+    'TESTING': True,
+    'DEBUG': True,
+    'OIDC_CLIENT_SECRETS': 'conf/client_secrets.json',
+    'OIDC_ID_TOKEN_COOKIE_SECURE': False,
+    'OIDC_REQUIRE_VERIFIED_EMAIL': False,
+    'OIDC_USER_INFO_ENABLED': True,
+    'OIDC_OPENID_REALM': 'farmasalud',
+    'OIDC_SCOPES': ['openid', 'email', 'profile'],
+    'OIDC_INTROSPECTION_AUTH_METHOD': 'client_secret_post'
+})
 
-#oidc = OpenIDConnect(flask_app)
+oidc = OpenIDConnect(flask_app)
 #sucursales = app.namespace('sucursales', description='Manejar Sucursales')
 #articulos = app.namespace('articulos', description='Manejar articulos')
 #inventory = app.namespace('inventory', description='Manejar articulos')
