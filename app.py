@@ -1,6 +1,6 @@
 #Matias Gonzalo Calvo | matiasgonzalocalvo@gmail.com | matcalvo@santandertecnologia.com.ar
 
-from flask import Flask, request, jsonify, json, Response, stream_with_context, g
+from flask import Flask, request, jsonify, json, Response, stream_with_context, g, url_for
 from flask_restplus import Api, Resource, fields, cors, reqparse, inputs
 import yaml
 import logging
@@ -33,7 +33,6 @@ flask_app.config['OVERWRITE_REDIRECT_URI'] = 'https://farmasaludapi.mgcalvo.com/
 #Fix https
 @property
 def specs_url(self):
-    url_for = ""
     return url_for(self.endpoint('specs'), _external=True, _scheme='https')    
 Api.specs_url = specs_url
 
