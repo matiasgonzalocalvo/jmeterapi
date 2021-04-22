@@ -1,6 +1,6 @@
-mysql-connector==2.2.9
+#mysql-connector==2.2.9
 Flask==1.1.2
-mysql-connector-python==8.0.5
+#mysql-connector-python==8.0.5
 werkzeug==0.16.1 
 Flask-Cors==3.0.8        
 Flask-Login==0.5.0        
@@ -9,5 +9,5 @@ Flask-RESTful==0.3.8
 flask-restplus==0.13.0
 PyYAML==5.3.1
 requests==2.22.0
-#sudo apt install libmariadb-dev
-#sudo apt-get install libmariadbclient-dev
+jwt
+psycopg2-binary
